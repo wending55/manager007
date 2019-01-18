@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <h2>用户登录</h2>
     <div class="form-container">
       <el-form
         :label-position="labelPosition"
@@ -13,7 +14,7 @@
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="formData.password" type="password"
-                    @keyup.enter="submitForm('formData')"></el-input>
+                    @keyup.enter.native="submitForm('formData')"></el-input>
         </el-form-item>
         <el-button class="login-btn" type="success" @click="submitForm('formData')">登录</el-button>
       </el-form>
@@ -64,9 +65,11 @@ export default {
         if (valid) {
           // 发送请求，axios调用接口
           this.$axios.post("login",this.formData).then(res=>{
-            // console.log(res);
             if (res.data.meta.status === 200) {
               this.$message.success(res.data.meta.msg);
+            // 保存token去首页
+              window.sessionStorage.setItem("token", res.data.data.token);
+              this.$router.push("/");
             } else if (res.data.meta.status == 400) {
               this.$message.error(res.data.meta.msg);
             }

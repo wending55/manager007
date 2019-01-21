@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
-    <h2>用户登录</h2>
     <div class="form-container">
+      <h2>用户登录</h2>
       <el-form
         :label-position="labelPosition"
         label-width="80px"
@@ -9,14 +9,27 @@
         :rules="rules"
         ref="formData"
       >
-        <el-form-item label="用化名" prop="username">
+        <el-form-item
+          label="用化名"
+          prop="username"
+        >
           <el-input v-model="formData.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="formData.password" type="password"
-                    @keyup.enter.native="submitForm('formData')"></el-input>
+        <el-form-item
+          label="密码"
+          prop="password"
+        >
+          <el-input
+            v-model="formData.password"
+            type="password"
+            @keyup.enter.native="submitForm('formData')"
+          ></el-input>
         </el-form-item>
-        <el-button class="login-btn" type="success" @click="submitForm('formData')">登录</el-button>
+        <el-button
+          class="login-btn"
+          type="success"
+          @click="submitForm('formData')"
+        >登录</el-button>
       </el-form>
     </div>
   </div>
@@ -64,19 +77,15 @@ export default {
         // console.log(valid);
         if (valid) {
           // 发送请求，axios调用接口
-          this.$axios.post("login",this.formData).then(res=>{
+          this.$axios.post("login", this.formData).then(res => {
             if (res.data.meta.status === 200) {
-              this.$message.success(res.data.meta.msg);
-            // 保存token去首页
               window.sessionStorage.setItem("token", res.data.data.token);
               this.$router.push("/");
-            } else if (res.data.meta.status == 400) {
-              this.$message.error(res.data.meta.msg);
-            }
+            };
           });
         } else {
           // 用户名密码输入格式有误
-          this.$message.error('登录失败，请正确输入用户名或密码！');
+          this.$message.error("登录失败，请正确输入用户名或密码！");
           return false;
         }
       });
